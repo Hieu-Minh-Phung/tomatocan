@@ -19,5 +19,10 @@ class RsvpqTest < ActiveSupport::TestCase
     @rsvpq.send "#{field}=", email_entry
     refute @rsvpq.valid?
     end
+
+    test 'test_email_length' do
+      @rsvpq.send "#{field}=", "#{field}" * 255
+      refute @rsvpq.valid?
+    end
 end
 end
