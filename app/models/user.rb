@@ -37,9 +37,8 @@ class User < ApplicationRecord
   scope :updated_at, -> { where(order: 'DESC') }
   after_initialize :assign_defaults_on_new_user, if: -> {new_record?}
 
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, 
-             allow_blank: true, :if => :email_changed?, 
-             email:true
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates_format_of   :email, with: Devise.email_regexp, allow_blank: true, :if => :email_changed?
   validates :name,  presence: true, length: { maximum: 50 }
   validates :permalink, presence: true, length: { maximum: 20, message: "must be less than 20 characters" },
                         format:     { with: /\A[\w+]+\z/ },

@@ -1,30 +1,22 @@
-
-
 require 'test_helper'
 
 class StaticPagesControllerTest < ActionController::TestCase
-  # test "should get home" do
-  #  get :home
-  #  assert_response :success
-  # end
+  setup do
+    @event = events(:one)
+  end
 
-  test 'should_get_aboutus' do
-    get :aboutus
+  test 'should get home' do
+   get :home
+   assert_response :success
+  end
+
+ test 'should_get_studyhall' do
+    get :studyhall
     assert_response :success
   end
 
   test 'should_get_faq' do
     get :faq
-    assert_response :success
-  end
-
-  test 'should_get_suggestedperks' do
-    get :suggestedperks
-    assert_response :success
-  end
-
-  test 'should_get_tellfriends' do
-    get :tellfriends
     assert_response :success
   end
 

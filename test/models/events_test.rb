@@ -40,6 +40,12 @@ class EventTest < ActiveSupport::TestCase
     assert_not @eventT.save, "Event saved with absent start_at"
   end
 
+  test "validate event only start once with the same topic" do
+    @eventT.start_at = events(:three).start_at
+    @eventT2.start_at = events(:four).start_at
+    assert_not @eventT2.save, "Event saved with the same start time"
+  end
+  
   test "name without url" do
     evalFormat do |format|
       @eventT.name = events(:one).name + format

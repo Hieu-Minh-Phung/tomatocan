@@ -18,8 +18,22 @@ class UserVisitsHomePageTest < ActionDispatch::IntegrationTest
   test "should go to about page when clicking about in header"  do
   	within("div#globalNavbar.collapse.navbar-collapse") do
   		click_on('About Us', match: :first)
-  		assert_equal current_path, aboutus_path
+  		assert_equal current_path, getinvolved_path
   	end
+  end
+
+  test "should go to jointheteam page when clicking join in header"  do
+    within("div#globalNavbar.collapse.navbar-collapse") do
+      click_on('Join the Team', match: :first)
+      assert_equal current_path, jointheteam_path
+    end
+  end
+
+  test "should go to studyhall page when clicking studyhall in header"  do
+    within("div#globalNavbar.collapse.navbar-collapse") do
+      click_on('Study Hall', match: :first)
+      assert_equal current_path, studyhall_path
+    end
   end
 
   #dpc = discover previous conversations
@@ -62,12 +76,12 @@ class UserVisitsHomePageTest < ActionDispatch::IntegrationTest
     #end
   end  
 
-  test "should be able to add my own conversation" do
-    within("div.row.learnMore") do
-      click_on("Add Your Conversation", match: :first)
-      assert_equal current_path, new_event_path
-    end 
-  end  
+  # test "should be able to add my own conversation" do
+  #   within("div.row.learnMore") do
+  #     click_on("Add Your Conversation", match: :first)
+  #     assert_equal current_path, new_event_path
+  #   end 
+  # end  
 
 
   test "should go to FAQ page when clicking on FAQ in footer"  do
@@ -86,10 +100,10 @@ class UserVisitsHomePageTest < ActionDispatch::IntegrationTest
   end  
 
   test "images should exist for social media sharing buttons in footer" do
-    email_img = "//footer/div/div/div[3]/a[3]/img"
-    linkedin_img = "//footer/div/div/div[3]/a[2]/img"
+    email_img = "//footer/div/div/div[3]/div/a[3]/img"
+    linkedin_img = "//footer/div/div/div[3]/div/a[2]/img"
     facebook_img = "//footer/div/div/div[3]/div/a/img"
-    twitter_img = "//footer/div/div/div[3]/a[1]/img"
+    twitter_img = "//footer/div/div/div[3]/div/a[1]/img"
 
     assert page.has_xpath? email_img
     assert page.has_xpath? linkedin_img
@@ -104,10 +118,10 @@ class UserVisitsHomePageTest < ActionDispatch::IntegrationTest
   end 
 
   test "links should exist for social media sharing buttons in footer" do
-    linkedin_link = "/html/body/header/footer/div/div/div[3]/a[2]"
-    facebook_link = "/html/body/header/footer/div/div/div[3]/div/a"
-    twitter_link = "/html/body/header/footer/div/div/div[3]/a[1]"
-    email_link = "/html/body/header/footer/div/div/div[3]/a[3]"
+    linkedin_link = "//footer/div/div/div[3]/div/a[2]"
+    facebook_link = "//footer/div/div/div[3]/div/a"
+    twitter_link = "//footer/div/div/div[3]/div/a[1]"
+    email_link = "//footer/div/div/div[3]/div/a[3]"
 
     assert page.has_xpath? linkedin_link
     assert page.has_xpath? facebook_link

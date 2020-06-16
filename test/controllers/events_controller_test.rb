@@ -131,9 +131,16 @@ class EventsControllerTest < ActionController::TestCase
         assert_empty @event.errors.messages
     end
 
-  test 'create should send a reminder functional test' do
-    sign_in @user
-    post :create , params: {event: {start_at: Time.now + 2.days, usrid: @user.id, name: @user.name}}
-    assert_enqueued_jobs(1)
+    test 'create should send a reminder functional test' do
+        sign_in @user
+        post :create , params: {event: {start_at: Time.now + 2.days, usrid: @user.id, name: @user.name}}
+        assert_enqueued_jobs(1)
+    
+  end
+
+    test 'update should resend a reminder functional test' do
+        sign_in @user
+        patch :update , params: {id: @event.id, event: {start_at: Time.now + 2.days, usrid: @user.id, name: @user.name}}
+        assert_enqueued_jobs(1)
   end
 end
