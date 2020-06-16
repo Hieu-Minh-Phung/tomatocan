@@ -7,5 +7,6 @@ class Rsvpq < ApplicationRecord
   validates_format_of   :email, with: Devise.email_regexp, allow_blank: true
   validates :email, presence: {unless: :user_id? }, 
              length: {in: 3..254},
-             uniqueness: {case_sensitive: false, scope: :event_id}
+             uniqueness: {case_sensitive: false, scope: :event_id},
+             allow_blank: true
 end
