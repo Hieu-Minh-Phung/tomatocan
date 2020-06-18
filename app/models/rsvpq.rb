@@ -1,5 +1,4 @@
 class Rsvpq < ApplicationRecord
-  before_save {email.downcase!}
   belongs_to :user, :optional => true
   belongs_to :event
 #  validates :user_id, presence: true

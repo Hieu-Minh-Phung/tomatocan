@@ -36,9 +36,10 @@ class RsvpqTest < ActiveSupport::TestCase
   end
 
   test 'test_email_case_sensitive' do
-    mixed_case_email = "AcB@ExAmpLe.cOm"
-    @rsvpqT.email = mixed_case_email
+    @rsvpqT.email = "AcB@ExAmpLe.cOm"
+    duplicate_rsvpqT = @rsvpqT.dup
+    duplicate_rsvpqT.email = @rsvpqT.email.upcase    
     @rsvpqT.save
-    assert_equal mixed_case_email.downcase, @rsvpqT.reload.email
+    assert_not duplicate_rsvpqT.valid?, "saved rsvp with an email that already existed"
   end
 end
