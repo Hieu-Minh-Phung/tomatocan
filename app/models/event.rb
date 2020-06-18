@@ -24,6 +24,13 @@ class Event < ApplicationRecord
 
   validates_numericality_of :end_at, less_than: ->(t) { (t.start_at.to_f + 5.hours.to_f) }, allow_blank: true, message: " time can't be more than 3 hours after Conversation start time"
 
+  validate :startat_not_in_the_past
+  def startat_not_in_the_past
+    if start_at.present? && start_at < Time.now
+      errors.add(:start_at, "Can't create event in the past")
+    end
+  end
+
 =begin
   validate :endat_greaterthan_startat
   def endat_greaterthan_startat

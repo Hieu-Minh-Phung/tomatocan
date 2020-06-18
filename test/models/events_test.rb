@@ -40,10 +40,16 @@ class EventTest < ActiveSupport::TestCase
     assert_not @eventT.save, "Event saved with absent start_at"
   end
 
+  test "validate start_at cannot be in the past" do
+    @eventT.start_at = events(:past_event)
+    assert_not @eventT.save, "Saved event in the past"
+  end
+
   test "validate event only start once with the same topic" do
     @eventT.start_at = events(:three).start_at
+    @eventT.save
     @eventT2.start_at = events(:four).start_at
-    assert_not @eventT2.save, "Event saved with the same start time"
+    assert_not @eventT2.valid?, "Event saved with the same start time"
   end
   
   test "name without url" do
@@ -80,13 +86,14 @@ class EventTest < ActiveSupport::TestCase
 
   test "endat_greaterthan_startat" do
     #end_at greater than start_at
-    @eventT.end_at = Time.now
+    @eventT.end_at = events(:one).end_at
     @eventT.start_at = @eventT.end_at - 2.hours
     assert @eventT.save, "Not accepting events with end_at > start_at"
 
-    @eventT.start_at = Time.now
-    @eventT.end_at = @eventT.start_at - 2.hours
-    assert_not @eventT.save, "Accepting events with start_at > end_at"
+    # Not validating end_at anymore
+    # @eventT.start_at = events(:one).start_at
+    # @eventT.end_at = @eventT.start_at - 2.hours
+    # assert_not @eventT.save, "Accepting events with start_at > end_at"
   end
 
   test "rsvpqs association" do
