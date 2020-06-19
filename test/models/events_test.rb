@@ -3,7 +3,7 @@ require 'test_helper'
 class EventTest < ActiveSupport::TestCase
   setup do
     #Basic data setup
-    @eventT = Event.first
+    @eventT = Event.find(4)
     @eventT2 = Event.find(3)
     @invalidFormat = ["http", ".co", ".com", ".net", ".tv", ".uk", ".ly", ".me",
       ".biz", ".mobi", ".cn", "kickstarter", "barnesandnoble", "smashwords",
@@ -12,7 +12,7 @@ class EventTest < ActiveSupport::TestCase
 
   test "validate presence of usrid" do
     #usrid present
-    @eventT.usrid = events(:one).usrid  #Ensuring usrid is present
+    @eventT.usrid = events(:four).usrid  #Ensuring usrid is present
     assert @eventT.save, "Event not saved with present usrid"
 
     #userid absent
@@ -22,7 +22,7 @@ class EventTest < ActiveSupport::TestCase
 
   test "validate presence of name" do
     #name present
-    @eventT.name = events(:one).name  #Ensuring name is present
+    @eventT.name = events(:four).name  #Ensuring name is present
     assert @eventT.save, "Event not saved with present name"
 
     #name absent
@@ -45,16 +45,16 @@ class EventTest < ActiveSupport::TestCase
     assert_not @eventT.save, "Saved event in the past"
   end
 
-  test "validate event only start once with the same topic" do
-    @eventT.start_at = events(:three).start_at
-    @eventT.save
+  test "validate 2 events cant have the same start time" do
+    @eventT.start_at = events(:four).start_at
+    @eventT.save!
     @eventT2.start_at = events(:four).start_at
     assert_not @eventT2.valid?, "Event saved with the same start time"
   end
   
   test "name without url" do
     evalFormat do |format|
-      @eventT.name = events(:one).name + format
+      @eventT.name = events(:four).name + format
     end
   end
 
@@ -86,7 +86,7 @@ class EventTest < ActiveSupport::TestCase
 
   test "endat_greaterthan_startat" do
     #end_at greater than start_at
-    @eventT.end_at = events(:one).end_at
+    @eventT.end_at = events(:four).end_at
     @eventT.start_at = @eventT.end_at - 2.hours
     assert @eventT.save, "Not accepting events with end_at > start_at"
 
