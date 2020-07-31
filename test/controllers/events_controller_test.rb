@@ -82,6 +82,13 @@ class EventsControllerTest < ActionController::TestCase
         assert_response :success 
     end    
 
+    test "JSON format adds permalink and username" do
+        get :show, params: {id: @event.id, format: :json}
+        json_response = JSON.parse(response.body)
+        assert_not_nil json_response['permalink']
+        assert_not_nil json_response['username']
+    end
+
     #new
     test "#new should instantiate new event object" do
         sign_in users(:one)
@@ -130,9 +137,9 @@ class EventsControllerTest < ActionController::TestCase
         assert_empty @event.errors.messages
     end
 
-  test 'create should send a reminder functional test' do
-    sign_in @user
-    post :create , params: {event: {start_at: Time.now + 2.days, user_id: @user.id, name: @user.name}}
-    assert_enqueued_jobs(1)
-  end
+    test 'create should send a reminder functional test' do
+        sign_in @user
+        post :create , params: {event: {start_at: Time.now + 2.days, user_id: @user.id, name: @user.name}}
+        assert_enqueued_jobs(1)
+    end
 end

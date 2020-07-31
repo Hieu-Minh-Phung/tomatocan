@@ -16,23 +16,29 @@ class Merchandise < ApplicationRecord
   mount_uploader :merchepub, MerchepubUploader
   mount_uploader :merchmobi, MerchmobiUploader
   mount_uploader :merchpdf, MerchpdfUploader
-
+  
   def get_filename_and_data
     filename_and_data = {}
     self.attributes.each do  |name, value|
       case name
-      when 'audio'
-        filename_and_data = {filename: value, data: audio}
+      when 'audio'  
+       filename_and_data = {filename: value, data: audio}
+       break if filename_and_data[:filename] != nil
       when 'graphic'
-        filename_and_data = {filename: value, data: graphic}
+       filename_and_data = {filename: value, data: graphic}
+       break if filename_and_data[:filename] != nil
       when 'video'
-        filename_and_data = {filename: value, data: video}
+       filename_and_data = {filename: value, data: video}
+       break if filename_and_data[:filename] != nil
       when 'merchpdf'
-        filename_and_data = {filename: value, data: merchpdf}    
+       filename_and_data = {filename: value, data: merchpdf}
+       break if filename_and_data[:filename] != nil    
       when 'merchmobi'
-        filename_and_data = {filename: value, data: merchmobi}
+       filename_and_data = {filename: value, data: merchmobi}
+       break if filename_and_data[:filename] != nil
       when 'merchepub'
-        filename_and_data = {filename: value, data: merchepub}
+       filename_and_data = {filename: value, data: merchepub}
+       break if filename_and_data[:filename] != nil
       end
     end
     filename_and_data

@@ -67,10 +67,11 @@ class MerchandiseTest < ActiveSupport::TestCase
   end
 
   test 'get_filename_and_data validation' do
-    filename_and_data_all = @all_merchandises.each { |x| x.get_filename_and_data }
-    @merchandise_attachments.each do |x|   
-      assert_equal @all_merchandises.each { |p| p[x] }, filename_and_data_all.each { |q| q[x] }
-    end
+    filename_and_data_all = @all_merchandises.collect {|x| x.get_filename_and_data}
+    filename_real = filename_and_data_all.collect {|y| y[:filename]}
+    filename_test = ["Test.mobi","Test.jpg","Test.mp4","Test.epub","Test.mp3","rails5.pdf","user1.pdf"]
+    assert_not_equal filename_and_data_all, @all_merchandises #ensure method does not return @all_merchandises
+    assert_equal filename_real.compact, filename_test
   end
  
 end

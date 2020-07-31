@@ -204,7 +204,7 @@ class TestUser < ActiveSupport::TestCase
     end
   end
 
-   test "user retrieved from database if auth existed" do
+  test "user retrieved from database if auth existed" do
     auth = OmniAuth::AuthHash.new({provider: "facebook", uid: "98765", info: {name:"HieuPhung", email:"example@mail.com"}})
     # assert no changes in database
     assert_no_difference('User.count') do
@@ -222,7 +222,7 @@ class TestUser < ActiveSupport::TestCase
     auth = OmniAuth::AuthHash.new({provider: "facebook", uid: "12345", info: {name:"Reagan", email:"awesome96@email.com", permalink:"reagan12", password:"awesomepass", image:'nicejpg'} })
     # assert changes in database
     assert_difference('User.count', 1) do
-      user = User.from_omniauth(auth)  
+      User.from_omniauth(auth)  
     end
 
     # assert user created in database
