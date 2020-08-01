@@ -21,8 +21,8 @@ class NonuserNavbar < ActionDispatch::IntegrationTest
     assert page.has_link? 'Join the Team'
     find_link('Join the Team', match: :first).click
     assert_equal '/jointheteam', current_path
-    assert page.has_link? 'Activism Hall'
-    find_link('Activism Hall', match: :first).click
+    assert page.has_link? 'Drop In Anytime'
+    find_link('Drop In Anytime', match: :first).click
     assert_equal '/studyhall', current_path
     assert page.has_link? 'FAQ'
     find_link('FAQ', match: :first).click

@@ -30,9 +30,9 @@ class UserVisitsHomePageTest < ActionDispatch::IntegrationTest
     end 
   end 
 
-  test "should go to Activism Hall page when clicking Activism Hall in header"  do
+  test "should go to DropIn page when clicking Drop In Anytime in header"  do
     within("div#globalNavbar.collapse.navbar-collapse") do
-      click_on("Activism Hall", match: :first)
+      click_on("Drop In Anytime", match: :first)
       assert_equal current_path, '/studyhall'
     end 
   end 
