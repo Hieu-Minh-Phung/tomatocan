@@ -17,14 +17,14 @@ class Api::V1::SessionsController < Api::V1::BaseApiController
     end
 
     def destroy
-        use_rname = current_user.name
+        user_name = current_user.name
         sign_out(current_user)
-        render :json=> {:success=>true, :name=>use_rname}
+        render :json=> {:success=>true, :name=>user_name}
     end
 
     protected
     def ensure_params_exist
-        return unless params.blank?
+        return unless params[:user].blank?
         render :json=>{:success=>false, :message=>"missing user_login parameter"}, :status=>422
     end
 

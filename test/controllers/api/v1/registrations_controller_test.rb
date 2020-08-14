@@ -13,8 +13,20 @@ class Api::V1::RegistrationsControllerTest < ActionController::TestCase
     json_response = JSON.parse(response.body)
     assert_not_nil json_response['success']
     assert_not_nil json_response['name']
-    assert_not_nil json_response['token'] #NOT GENERATING TOKEN
+    assert_not_nil json_response['token']
     assert_not_nil json_response['permalink']
+  end
+
+  test "successful registration should create user in database" do 
+    assert_difference('User.count', 1) do
+      post :create, as: :json, params: {user: {email: "test10@example.com", name: "test10", permalink: "test10", password: "password"}}
+    end
+  end
+
+  test "failed registration should not create user in database" do 
+    assert_no_difference('User.count') do
+      post :create, as: :json, params: {user: {email: "test10@example.com", name: "test10", permalink: "test10"}}
+    end
   end
 
   test "failed registration should return 422" do
@@ -25,7 +37,7 @@ class Api::V1::RegistrationsControllerTest < ActionController::TestCase
   test "failed registration should give errors in response" do
     post :create, as: :json, params: {user: {email: "test10@example.com", name: "test10", permalink: "test10"}}
     json_response = JSON.parse(response.body)
-    assert_not_nil json_response['errors']
+    assert_not_nil json_response['errors']  
   end
 
 end

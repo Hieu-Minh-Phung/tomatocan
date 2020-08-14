@@ -3,7 +3,8 @@ class Api::V1::UsersController < Api::V1::BaseApiController
         if current_user.nil?
             render :json=> {:success=>false}, :status=>401
             return
-        elsif current_user.name == params[:id]
+        elsif current_user.id.to_s == params[:id].to_s
+            # params[:id] comes back as a string and current_user.id comes back as a fixnum
             if current_user.valid_password?(params[:current_password]) and current_user.update_attributes(user_params)
                 render :json=> {:success=>true, :privileged=>true, :name=>current_user.name, :token=>current_user.authentication_token, :profpic=>current_user.profilepic,
               :about=>current_user.about, :genre1=>current_user.genre1, :genre2=>current_user.genre2, :genre3=>current_user.genre3, :bannerpic=>current_user.bannerpic,
@@ -26,7 +27,7 @@ class Api::V1::UsersController < Api::V1::BaseApiController
 
     private
     def user_params
-        params.permit(:permalink, :name, :email, :password,
+        params.require(:user).permit(:permalink, :name, :email, :password,
                                      :about, :author, :password_confirmation, :genre1, :genre2, :genre3,
                                      :twitter, :title, :profilepic, :remember_me,
                                      :facebook, :youtube1, :youtube2,
@@ -34,7 +35,7 @@ class Api::V1::UsersController < Api::V1::BaseApiController
                                      :agreeid, :purchid, :bannerpic, :on_password_reset, :stripesignup )
     end
     def user_params_less_access
-      params.permit(:name,
+        params.require(:user).permit(:name,
                                      :about, :author, :genre1, :genre2, :genre3,
                                      :twitter, :title, :profilepic, :remember_me,
                                      :facebook, :youtube1, :youtube2,
@@ -43,5 +44,5 @@ class Api::V1::UsersController < Api::V1::BaseApiController
     end
     def get_errors
         return current_user.errors.messages
-      end
+    end
 end

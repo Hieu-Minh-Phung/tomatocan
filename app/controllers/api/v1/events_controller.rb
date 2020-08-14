@@ -13,11 +13,11 @@ class Api::V1::EventsController < Api::V1::BaseApiController
             return
         end
         @event = current_user.events.build(event_params)
-        @event.update_attribute(:user_id, current_user.id)
         if @event.save
+            @event.update_attribute(:user_id, current_user.id) # this one skips validations and saves record, should not put before save
             render :json=> {:success=>true, :token=>current_user.authentication_token}
         else
-            render json: @event.errors, status: :unprocessable_entity
+            render json: {errors: @event.errors}, status: :unprocessable_entity
         end
     end
 
@@ -34,9 +34,11 @@ class Api::V1::EventsController < Api::V1::BaseApiController
     end
 
     def update
-        @event = Event.find(params[:id])
+        # find method raise ActiveRecord::RecordNotFound exception, use find_by to raise nil 
+        
+        @event = Event.find_by_id(params[:id]) 
         if @event.nil?
-            render :json=> {:success=>false}, status=>422
+            render :json=> {:success=>false}, :status=>422
             return
         elsif current_user.nil? or current_user.id != @event.user_id
             render :json=> {:success=>false}, :status=>401
