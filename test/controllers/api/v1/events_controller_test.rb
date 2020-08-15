@@ -103,7 +103,7 @@ class Api::V1::EventsControllerTest < ActionController::TestCase
     end
   end
 
-  test "successful event decrease event count in database" do
+  test "successful event deletion decrease event count in database" do
     sign_in users(:one)
     assert_difference('Event.count', -1) do
       event = Event.where("user_id = ?", 1).first
